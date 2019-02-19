@@ -1,4 +1,4 @@
-#Seattle Right To Work Policy
+Seattle Right To Work Policy
 #Course:Computational Thinking for Governance Analytics
 
 

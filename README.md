@@ -1,5 +1,5 @@
 # Right To Work Policy
-## Course:Computational Thinking for Governance Analytics
+## Course: Computational Thinking for Governance Analytics
 
 
 ## Group: 
@@ -11,7 +11,7 @@
 * Caz VanDevere
 
 
-In the repo you can find:
+In the repo you can find: (note: add links and maybe photo)
 *	The final report
 *	The folder data with all the original files
 *	The preprocessed data

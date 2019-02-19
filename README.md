@@ -1,6 +1,10 @@
 # PUBPOL599-Seattle_Right_To_Work
-Course:Computational Thinking for Governance Analytics
-Group: Darcy Posselli, Evan Lih, Evan Mirolla, Ana Chkheidze, and Caz VanDevere
+#Course:Computational Thinking for Governance Analytics
+
+
+#Group: Darcy Posselli, Evan Lih, Evan Mirolla, Ana Chkheidze, and Caz VanDevere
+
+
 In the repo you can find:
 •	The final report
 •	The folder data with all the original files

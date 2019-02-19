@@ -1,4 +1,4 @@
-# PUBPOL599-Seattle_Right_To_Work
+#Seattle Right To Work Policy
 #Course:Computational Thinking for Governance Analytics
 
 

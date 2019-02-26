@@ -10,6 +10,8 @@
 * Ana Chkheidze
 * Caz VanDevere
 
+https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/team.jpeg
+
 
 In the repo you can find: (note: add links and maybe photo)
 *	The final report

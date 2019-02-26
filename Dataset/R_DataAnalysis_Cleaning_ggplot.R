@@ -1,13 +1,12 @@
 
+
+#This file is for reading the dataset into R. 
+#each of these calls these packages and installs them. We may need them to export more stuff in the future. 
 library(haven)
 library(ggplot2)
 library(scales)
 library(dplyr)
-library(curl)
-dataset <- read.csv("/Users/evanlih/Github/PUBPOL599-Seattle-Crisis-Data/Evan_Lih/Cleaned_RTW_Dataset.csv")
+library(Rcurl)
+dataset <- 'https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/Evan_Lih/Cleaned_RTW_Dataset.csv'
 
-dataset <- ('https://raw.githubusercontent.com/EvanLih/PUBPOL599_Right_To_Work/master/Evan_Lih/Cleaned_RTW_Dataset.csv')
-
-test <- read.csv(dataset)
-
-test <- read.csv(text=GET('https://raw.githubusercontent.com/EvanLih/PUBPOL599_Right_To_Work/master/Evan_Lih/Cleaned_RTW_Dataset'), header = T)
+x <- read.csv(dataset)

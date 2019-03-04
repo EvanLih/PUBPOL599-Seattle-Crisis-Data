@@ -1,0 +1,51 @@
+---
+title: "Test-Ana"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+Link_1="https://raw.githubusercontent.com/EvanLih/PUBPOL599_Right_To_Work/master/Evan_Lih/Cleaned_RTW_Dataset.csv"
+RTW=read.csv(Link_1, header = TRUE)
+```
+
+```{r summary,eval=TRUE}
+str(RTW)
+```
+
+```{r histogram, eval=TRUE}
+hist(RTW$incwage)
+```
+
+```{r plots, eval=TRUE}
+plot(RTW$Right_to_Work,RTW$incwage)
+plot(RTW$incwage,RTW$sex)
+```
+
+Our results are **Significant**;
+On average, all else equal, being an RTW State is associated with a decrease of $7691.56 in the wage income. Also, on average, all else equal, being a male is associated with an increase of 20809.02 in annual wages compared to being a woman. 
+```{r linearmodels, eval=TRUE}
+testRTW=lm(as.numeric(incwage)~Right_to_Work+sex,data=RTW)
+summary(testRTW)
+```
+
+Our adjusted R-squared is small...
+```{r adjR, eval=TRUE}
+summary(testRTW)$adj.r.squared
+```
+
+```{r qqplot, eval=TRUE}
+library(car)
+qqPlot(testRTW, main="QQ Plot")
+```
+
+```{r}
+ncvTest(testRTW)
+```
+
+```{r}
+vif(testRTW)>4
+```
+
+```{r}
+#influencePlot(test, id.method = 'noteworthy', main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
+```

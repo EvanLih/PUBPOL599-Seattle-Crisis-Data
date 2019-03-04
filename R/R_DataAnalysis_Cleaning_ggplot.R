@@ -24,3 +24,8 @@ means <- aggregate(incwage ~ Right_to_Work, dataset, mean)
 means$incwage %<>% round(2)
 #geom_bar(stat = "identity") +
   
+
+x <- read.csv(dataset)
+
+
+

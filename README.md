@@ -13,7 +13,7 @@
 <img src="https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/team.jpeg">
 
 
-In the repo you can find: (note: add links and maybe photo)
+In the repo you can find:
 *	The final report
 *	The folder <a href="https://github.com/EvanLih/PUBPOL599_Right_To_Work/tree/master/Dataset">data</a> with all the original files
 *	The  <a href="https://github.com/EvanLih/PUBPOL599_Right_To_Work/blob/master/Dataset/Right%20to%20Work%20by%20State.csv">preprocessed data</a>

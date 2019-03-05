@@ -9,10 +9,11 @@ pacman::p_load("haven", "ggplot2", "scales",
 
 dataset <- 'https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/Dataset/Cleaned_RTW_Dataset.csv'
 
-dataset <- read.csv('/Users/evanlih/Github/PUBPOL599-Seattle-Crisis-Data/Dataset/Cleaned_RTW_Dataset.csv')
-
 #converting the Right_to_Work column into as a factor, as it is currently being read as a integer. 
 dataset$Right_to_Work %<>% as.factor
+
+means <- aggregate(incwage ~ Right_to_Work, dataset, mean)
+means$incwage %<>% round(2)
 
 ggplot(dataset, aes(Right_to_Work, incwage), group = Right_to_Work) +
   geom_boxplot(outlier.color = "red", outlier.shape = 1) +
@@ -21,9 +22,7 @@ ggplot(dataset, aes(Right_to_Work, incwage), group = Right_to_Work) +
   geom_text(data=means, aes(label = incwage, y = incwage + .09)) +
   scale_x_discrete(breaks= c(0,1), labels = c("No Right to Work", "Right to Work"))
   
-means <- aggregate(incwage ~ Right_to_Work, dataset, mean)
-means$incwage %<>% round(2)
-#geom_bar(stat = "identity") +
+
   
 
 var.test(incwage ~ Right_to_Work, data = dataset)

@@ -8,6 +8,7 @@ pacman::p_load("haven", "ggplot2", "scales",
                "dplyr", "Rcurl", "magrittr")
 
 dataset <- 'https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/Dataset/Cleaned_RTW_Dataset.csv'
+dataset <- read.csv(dataset, stringsAsFactors = F)
 
 #converting the Right_to_Work column into as a factor, as it is currently being read as a integer. 
 dataset$Right_to_Work %<>% as.factor

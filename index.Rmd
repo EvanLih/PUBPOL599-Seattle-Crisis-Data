@@ -1,0 +1,61 @@
+---
+title: "R_DataAnalysis_Cleaning_ggplot"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#Pulling packages needed for initial analysis
+library(haven)
+library(ggplot2)
+library(scales)
+library(dplyr)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{Reading CSV}
+dataset <- ('https://raw.githubusercontent.com/EvanLih/PUBPOL599_Right_To_Work/master/Evan_Lih/Cleaned_RTW_Dataset')
+dataset <- read_csv(dataset, stringsAsFactors = F)
+```
+```{r}
+#install.packages("pacman")
+library("pacman")
+pacman::p_load("haven", "ggplot2", "scales", 
+               "dplyr", "magrittr")
+```
+
+```{r}
+
+dataset <- 'https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/Dataset/Cleaned_RTW_Dataset.csv'
+dataset <- read.csv(dataset, stringsAsFactors = F)
+```
+
+```{r}
+
+#converting the Right_to_Work column into as a factor, as it is currently being read as a integer. 
+dataset$Right_to_Work %<>% as.factor
+
+means <- aggregate(incwage ~ Right_to_Work, dataset, mean)
+means$incwage %<>% round(2)
+
+ggplot(dataset, aes(Right_to_Work, incwage), group = Right_to_Work) +
+  geom_boxplot(outlier.color = "red", outlier.shape = 1) +
+  scale_y_continuous(breaks = c(10000,30000,50000,70000,100000,500000,10000000), labels = dollar) +
+  labs(x = "Right to Work", y = "Income (dollars)") +
+  geom_text(data=means, aes(label = incwage, y = incwage + .09)) +
+  scale_x_discrete(breaks= c(0,1), labels = c("No Right to Work", "Right to Work"))
+  
+
+  
+
+var.test(incwage ~ Right_to_Work, data = dataset)
+
+t.test(incwage~Right_to_Work, data = dataset)
+
+test = glm(Right_to_Work ~ incwage, data = dataset, family = binomial())
+```

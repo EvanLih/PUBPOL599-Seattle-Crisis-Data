@@ -1,15 +1,15 @@
 ---
-title: "R_DataAnalysis_Cleaning_ggplot"
+title: "Income and Right to Work in the"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 #Pulling packages needed for initial analysis
-library(haven)
-library(ggplot2)
-library(scales)
-library(dplyr)
+install.packages("pacman", repos = "http://cran.us.r-project.org")
+library("pacman")
+pacman::p_load("haven", "ggplot2", "scales", 
+               "dplyr", "magrittr", "ggthemes")
 ```
 
 ## R Markdown
@@ -18,44 +18,86 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{Reading CSV}
-dataset <- ('https://raw.githubusercontent.com/EvanLih/PUBPOL599_Right_To_Work/master/Evan_Lih/Cleaned_RTW_Dataset')
-dataset <- read_csv(dataset, stringsAsFactors = F)
-```
 ```{r}
-#install.packages("pacman")
-library("pacman")
-pacman::p_load("haven", "ggplot2", "scales", 
-               "dplyr", "magrittr")
-```
-
-```{r}
-
 dataset <- 'https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/Dataset/Cleaned_RTW_Dataset.csv'
 dataset <- read.csv(dataset, stringsAsFactors = F)
+dataset$Right_to_Work %<>% as.factor
 ```
 
 ```{r}
-
 #converting the Right_to_Work column into as a factor, as it is currently being read as a integer. 
 dataset$Right_to_Work %<>% as.factor
+ggplot(dataset, aes(Right_to_Work, incwage, fill = Right_to_Work), group = Right_to_Work) +
+  geom_bar(stat = "summary", fun.y = "mean", position = position_dodge(width = 2.0), width = .7) +
+  labs(x = "Right to Work", y = "Income (dollars)") +
+  scale_x_discrete(breaks= c(0,1), labels = c("No RTW", "Has RTW")) +
+  scale_y_continuous(breaks = c(10000,20000,30000,40000,50000,60000), labels = dollar) +
+  scale_fill_manual(name= "Right to Work Status", labels=c("No Right to Work", "Right to Work"),
+                    values = c("dodgerblue4", "indianred4")) +
+  facet_grid(. ~ sex) +
+  labs(title = "Average Income by Sex", subtitle = "Divided by Right to Work/ No Right to Work") +
+  theme_stata() +
+  scale_color_stata()+
+  theme(plot.subtitle=element_text(size=10, hjust=0.5, color="black")) +
+  theme(plot.title=element_text(size=19, face="bold", hjust = .5)) +
+  theme(axis.title.x=element_text(face = "bold", size = 10)) +
+  theme(axis.title.y = element_text(face = "bold", size = 10)) +
+  theme(axis.text.y = element_text(angle = 45))
+```
+```{r}
 
 means <- aggregate(incwage ~ Right_to_Work, dataset, mean)
 means$incwage %<>% round(2)
 
-ggplot(dataset, aes(Right_to_Work, incwage), group = Right_to_Work) +
-  geom_boxplot(outlier.color = "red", outlier.shape = 1) +
-  scale_y_continuous(breaks = c(10000,30000,50000,70000,100000,500000,10000000), labels = dollar) +
-  labs(x = "Right to Work", y = "Income (dollars)") +
+ggplot(dataset, aes(Right_to_Work, incwage, fill = Right_to_Work, show.legend = FALSE), group = Right_to_Work) +
+  geom_boxplot(outlier.color = "red", outlier.shape = NA) +
+  scale_y_continuous(breaks = c(10000,30000,50000,70000,100000), labels = dollar) +
+  ylim(0,150000) +
+  labs(x = "Right to Work", y = "Income (Dollars)") +
   geom_text(data=means, aes(label = incwage, y = incwage + .09)) +
-  scale_x_discrete(breaks= c(0,1), labels = c("No Right to Work", "Right to Work"))
+  scale_x_discrete(breaks= c(0,1), labels = c("No Right to Work", "Right to Work")) +
   
+  scale_fill_manual(values = c("dodgerblue4", "indianred4")) +
+  labs(title = "Median Income by Right to Work Status") +
+  theme_stata() +
+  scale_color_stata()+
+  theme(plot.subtitle=element_text(size=10, hjust=0.5, color="black")) +
+  theme(plot.title=element_text(size=19, face="bold", hjust = .5)) +
+  theme(axis.title.x=element_text(face = "bold", size = 10)) +
+  theme(axis.title.y = element_text(face = "bold", size = 10)) +
+  theme(axis.text.y = element_text(angle = 45)) +
+  theme(legend.title=element_blank()) + 
+  guides(fill=FALSE)
+```
 
-  
+```{r}
+LinRegwage = lm(incwage ~ Right_to_Work, data = dataset)
+summary(LinRegwage)
+```
 
-var.test(incwage ~ Right_to_Work, data = dataset)
-
+```{r}
+testRTW=lm(as.numeric(incwage)~Right_to_Work+age,data=dataset)
+summary(testRTW)
+summary(testRTW)$adj.r.squared
+ggplot(dataset, aes(age, incwage, show.legend=TRUE)) +
+  stat_summary(fun.y="mean",geom="point")+
+  labs(x = "Age", y = "Income (dollars)") +
+  scale_y_continuous(breaks=seq(10000,60000,by=10000))+
+  facet_grid(. ~ Right_to_Work)+
+  labs(title="Average Income by Age by RTW Status (0=No RTW, 1= RTW)", caption = "IPUMS") +
+  theme_stata() +
+  scale_color_stata()+
+  theme(plot.subtitle=element_text(size=10, hjust=0.5, color="black")) +
+  theme(plot.title=element_text(size=13, face="bold", hjust = .5)) +
+  theme(axis.title.x=element_text(face = "bold", size = 10)) +
+  theme(axis.title.y = element_text(face = "bold", size = 10)) +
+  theme(axis.text.y = element_text(angle = 45))
+```
+```{r}
+t.test(age~Right_to_Work, data = dataset)
+test = glm(Right_to_Work ~ age, data = dataset, family = binomial())
 t.test(incwage~Right_to_Work, data = dataset)
 
 test = glm(Right_to_Work ~ incwage, data = dataset, family = binomial())
 ```
+

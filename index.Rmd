@@ -1,6 +1,7 @@
 ---
 title: "Income and Right to Work in the "
 output: html_document
+group: Evan L, Evan M, Darcy, Ana, and Caz
 ---
 
 ```{r setup, include=FALSE}
@@ -82,11 +83,10 @@ testRTW=lm(as.numeric(incwage)~Right_to_Work+age,data=dataset)
 summary(testRTW)
 ```
 
-Our adjusted R-squared is small...
+Our adjusted R-squared for this regression is small...
 ```{r}
 summary(testRTW)$adj.r.squared
 ```
-
 
 ```{r}
 ggplot(dataset, aes(age, incwage, show.legend=TRUE)) +

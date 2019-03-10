@@ -1,5 +1,5 @@
 ---
-title: "Income and Right to Work in the"
+title: "Income and Right to Work in the "
 output: html_document
 ---
 
@@ -20,7 +20,7 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r}
 dataset <- 'https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/Dataset/Cleaned_RTW_Dataset.csv'
-dataset <- read.csv(dataset, stringsAsFactors = F)
+dataset <- read.csv(dataset, stringsAsFactors = F) 
 dataset$Right_to_Work %<>% as.factor
 ```
 
@@ -75,10 +75,20 @@ LinRegwage = lm(incwage ~ Right_to_Work, data = dataset)
 summary(LinRegwage)
 ```
 
+Our results are **Significant**;
+On average, all else equal, being an RTW State is associated with a decrease of USD 7736.112 in the wage income. Also, on average, all else equal, one more year in age is associated with an increase of approximately USD 71 in annual wages compared to being a woman. 
 ```{r}
 testRTW=lm(as.numeric(incwage)~Right_to_Work+age,data=dataset)
 summary(testRTW)
+```
+
+Our adjusted R-squared is small...
+```{r}
 summary(testRTW)$adj.r.squared
+```
+
+
+```{r}
 ggplot(dataset, aes(age, incwage, show.legend=TRUE)) +
   stat_summary(fun.y="mean",geom="point")+
   labs(x = "Age", y = "Income (dollars)") +
@@ -93,6 +103,7 @@ ggplot(dataset, aes(age, incwage, show.legend=TRUE)) +
   theme(axis.title.y = element_text(face = "bold", size = 10)) +
   theme(axis.text.y = element_text(angle = 45))
 ```
+
 ```{r}
 t.test(age~Right_to_Work, data = dataset)
 test = glm(Right_to_Work ~ age, data = dataset, family = binomial())

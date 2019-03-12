@@ -1,7 +1,6 @@
 ---
 title: "Income and Right to Work in the United States"
-output: rmarkdown::github_document
-
+output: html_document
 group: Evan L, Evan M, Darcy, Ana, and Caz
 ---
 

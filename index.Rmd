@@ -32,7 +32,7 @@ pacman::p_load("haven", "ggplot2", "scales",
 
 
 ```{r}
-dataset <- 'https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/Dataset/Cleaned_RTW_Dataset.csv'
+dataset <- 'https://raw.githubusercontent.com/EvanLih/PUBPOL599_Right_To_Work/master/Data_Preprocessing/Cleaned_RTW_Dataset.csv'
 dataset <- read.csv(dataset, stringsAsFactors = F) 
 dataset$Right_to_Work %<>% as.factor
 ```

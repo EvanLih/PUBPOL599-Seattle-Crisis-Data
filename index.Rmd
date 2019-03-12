@@ -1,6 +1,7 @@
 ---
 title: "Income and Right to Work in the United States"
-output: html_document
+output: html_document:
+  keep_md: true
 group: Evan L, Evan M, Darcy, Ana, and Caz
 ---
 

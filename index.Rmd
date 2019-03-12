@@ -100,6 +100,9 @@ print(incSex)
 ```
 This t-test shows if there is a significant difference in the mean values of income between Males and Females. With a P-value of 2.2e-16, we can safely reject the null hypothesis that there is no difference in the mean values of income between Males and Females. 
 
+### Our results are **Significant**;
+On average, all else equal, being an RTW State is associated with a decrease of USD 7736.112 in the wage income. Also, on average, all else equal, one more year in age is associated with an increase of approximately USD 71 in annual wages. 
+
 ```{r}
 testRTW=lm(as.numeric(incwage)~Right_to_Work+age,data=dataset)
 summary(testRTW)
@@ -127,8 +130,9 @@ ggplot(dataset, aes(age, incwage, show.legend=TRUE)) +
 ```
 
 
-Our results are **Significant**;
-On average, all else equal, being an RTW State is associated with a decrease of USD 7736.112 in the wage income. Also, on average, all else equal, one more year in age is associated with an increase of approximately USD 71 in annual wages compared to being a woman. 
+
+
+##### The p-value for the interaction between sex*Right_to_Work is <2e-16 (significant), which indicates that the relationships between Right to Work and income length depends on gender - if the individual is male or female. 
 ```{r}
 t.test(incwage~Right_to_Work, data = dataset)
 
@@ -137,5 +141,11 @@ summary(aov(incwage ~ sex*Right_to_Work, data = dataset))
 
 
 ```
-##### The p-value for the interaction between sex*Right_to_Work is <2e-16 (significant), which indicates that the relationships between Right to Work and income length depends on gender - if the individual is male or female. .
+
+
+
+#Conclusion
+We found that there is a strong correlation between Right to Work and no Right to Work regarding income. We found compelling evidence to suggest that further significance when we consider sex and age as other explanatory variables. 
+
+
 

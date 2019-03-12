@@ -20,7 +20,7 @@ We are drawing our data from a subsample of the American Community Survey (ACS) 
 * Ana Chkheidze
 * Caz VanDevere
 
-<img src="https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/team.jpeg" border="10">
+<img src="https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/team.jpeg">
 
 
 In the repo you can find:

@@ -145,7 +145,7 @@ summary(aov(incwage ~ sex*Right_to_Work, data = dataset))
 
 
 #Conclusion
-We found that there is a strong correlation between Right to Work and no Right to Work regarding income. We found compelling evidence to suggest that further significance when we consider sex and age as other explanatory variables. 
+We found that there is a strong correlation between Right to Work and no Right to Work regarding income. In addition, there is a significant correlation between sex and income. Lastly, We found compelling evidence to suggest that further significance when we consider sex and age as other explanatory variables, through our ANOVA test .
 
 
 

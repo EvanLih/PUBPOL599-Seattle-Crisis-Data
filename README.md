@@ -9,9 +9,6 @@ Right to Work (RTW) refers to state laws that prohibit unions from compelling in
 
 Although Right to Work laws may seem beneficial to some, critics argue that they are inherently “anti-union.” Due to the existence of federal laws that prevent mandatory union membership, and some argue that Right to Work laws harm unions’ bargaining strength, subsequently lowering salaries and benefits for vulnerable workers.
 
-# Dataset
-We are drawing our data from a subsample of the American Community Survey (ACS) data from the year 2016. The ACS is a survey conducted annually by the U.S. Census Bureau, gathering long-form information previously collected in the Decennial (conducted in years ending 0) Census.
-
 ## Group: 
 
 * Darcy Posselli

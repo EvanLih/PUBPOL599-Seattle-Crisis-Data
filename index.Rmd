@@ -1,44 +1,111 @@
----
-title: "Income and Right to Work in the United States"
-output: html_document
-group: Evan L, Evan M, Darcy, Ana, and Caz
----
+
+<style type="text/css">
+
+body, td {
+   font-size: 16px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+</style>
+
+<a id='Top'></a>
+
+<br> 
+<center><img src="http://i.imgur.com/sSaOozN.png" width="500"></center>
+<br>
+
+<p style="text-align: center; font-size: 220%;"><b>
+Income and Right to Work in the United States
+</b></p>
+
+<br> 
+<center><img src="https://github.com/EvanLih/PUBPOL599_Right_To_Work/raw/master/team.jpeg" width="1000"></center>
+<br> 
+
+<p style="font-size: 130%;">
+Group</b>: Evan L, Evan M, Darcy, Ana, and Caz</i>
+</p>
+_____
+<a id='Contents'></a>
+
+<p style="text-align: left; font-size: 175%;"><b>
+Contents:
+</b></p>
+
+1. [Introduction](#part1)
+2. [Analysis](#part2)
+3. [Findings](#part3)
+
+_____
+<a id='part1'></a>
+
+<p style="text-align: center; font-size: 175%;"><b>
+Introduction and Data Overview
+</b></p>
+
+**The Right to Work (RTW) Policy**
+
+The Right to Work (RTW) refers to state laws that prohibit unions from compelling individuals to join, or pay union dues as condition for employment.. In addition, Right to Work  laws often prohibit contracts that mandate only hiring a unionized workforce. 
+
+Although Right to Work laws may seem beneficial to some, critics argue that they are inherently “anti-union.” Due to the existence of  federal laws that prevent mandatory union membership, and some argue that Right to Work laws harm unions’ bargaining strength, subsequently lowering salaries and benefits for vulnerable workers.
+
+<br>
+
+**Data**
+
+We are drawing our data from a subsample of the American Community Survey (ACS) data from the year 2016. The ACS is a survey conducted annually by the U.S. Census Bureau, gathering long-form information previously collected in the Decennial (conducted in years ending 0) Census. 
+
+Using IPUMS, we specified a variety of variables that we wanted to include in our dataset including Wage Income, Gender, and Age. Then we created a separate dataset manually (using the information available online) that included a binary variable where 1 indicated the state had Right to Work policies in place, and 0 indicated there were no Right to Work policies in place.
+
+Using Python, we cleaned up the datasets by renaming columns, changing data types as necessary, and removing missing values and values that didn’t fit.  We then combined the two datasets.  Using the new, combined dataset, we limited the evaluation to all people in the working age range, designated as 25-65.  Finally, that dataset was exported from Python as a CSV to be uploaded to R for modeling and visualization purposes. You can find the pre-processed Python document in our Repo. 
+
+<br>
+
+**Purpose of Analysis**
+
+Our analysis aims to contribute to this discussion of Right to Work.  We aim to consider the relationship between Right to Work laws and outcomes for workforce in terms of income. We specifically looked at the wage income as it is directly connected with the job renumeration versus total income that can include other non-work related sources of income as well. 
+
+These are our hypothesis: 
+
+ + $H_{0}$ = There is no significant difference in the means of income wages in states with RTW and without RTW. 
+  + $H_{1}$ = There is a significant difference in the means of income wage in states with RTW and without RTW.  
+
+<br>
+[Go back to the table of contents](#Contents)
+<br>
+
+_____
+<a id='part2'></a>
+
+<p style="text-align: center; font-size: 175%;"><b>
+Analysis
+</b></p>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warnings = FALSE)
-#Pulling packages needed for initial analysis
 install.packages("pacman", repos = "http://cran.us.r-project.org")
 library("pacman")
 pacman::p_load("haven", "ggplot2", "scales", 
                "dplyr", "magrittr", "ggthemes")
 ```
 
-# Dataset
-###### We are drawing our data from a subsample of the American Community Survey (ACS) data from the year 2016. The ACS is a survey conducted annually by the U.S. Census Bureau, gathering long-form information previously collected in the Decennial (conducted in years ending 0) Census. 
-
-# Policy Analysis
-######  Right to Work (RTW) refers to state laws that prohibit unions from compelling individuals to join, or pay union dues as condition for employment.. In addition, Right to Work  laws often prohibit contracts that mandate only hiring a unionized workforce. 
-
-
-###### Although Right to Work laws may seem beneficial to some, critics argue that they are inherently “anti-union.” Due to the existence of  federal laws that prevent mandatory union membership, and some argue that Right to Work laws harm unions’ bargaining strength, subsequently lowering salaries and benefits for vulnerable workers.
-
-
-
-
-## Purpose of Analysis
-###### Our analysis aims to contribute to this discussion of Right to Work.  We aim to consider the relationship between Right to Work laws and outcomes for workforce in terms of income.  
-  + $H_{0}$ = There is no significant difference in the means of income wages in states with RTW and without RTW. 
-  + $H_{1}$ = There is a significant difference in the means of income wage in states with RTW and without RTW.  
-
-
-```{r}
+```{r,eval=TRUE}
 dataset <- 'https://raw.githubusercontent.com/EvanLih/PUBPOL599_Right_To_Work/master/Data_Preprocessing/Cleaned_RTW_Dataset.csv'
 dataset <- read.csv(dataset, stringsAsFactors = F) 
 dataset$Right_to_Work %<>% as.factor
 ```
 
-```{r}
-#converting the Right_to_Work column into as a factor, as it is currently being read as a integer. 
+
+**RTW effects on Income**  
+
+We see from this model that RTW status results in a 7724.29 decrease in income. However, the R-squared for this model is low and so additional modeling that includes other independent variables might improve the ability of the model to explain the relationship between Right to Work and income.
+
+```{r, warning=FALSE,fig.align='center'}
+
 means <- aggregate(incwage ~ Right_to_Work, dataset, mean)
 means$incwage %<>% round(2)
 
@@ -47,10 +114,10 @@ suppressMessages(print(ggplot(dataset, aes(Right_to_Work, incwage, fill = Right_
   geom_boxplot(outlier.color = "red", outlier.shape = NA) +
   scale_y_continuous(breaks = c(10000,30000,50000,70000,100000), labels = dollar) +
   ylim(0,150000) +
-  labs(x = "Right to Work", y = "Income (Dollars)") +
+  labs(x = "Right to Work", y = "Income (Dollars)",caption = "IPUMS") +
   geom_text(data=means, aes(label = incwage, y = incwage + .09)) +
   scale_x_discrete(breaks= c(0,1), labels = c("No Right to Work", "Right to Work")) +
-  scale_fill_manual(values = c("dodgerblue4", "indianred4")) +
+  scale_fill_manual(values = c("tomato", "olivedrab1")) +
   labs(title = "Median Income by Right to Work Status") +
   theme_stata() +
   scale_color_stata()+
@@ -67,16 +134,29 @@ summary(LinRegwage)
 
 ```
 
+Our adjusted R squared is fairly small.
 ```{r}
+summary(LinRegwage)$adj.r.squared
+```
+
+
+**RTW effects on males and females**
+
+The results below shows that the presence of RTW laws effect both male and female income earnings. For Females in states with no RTW laws, the average income is __35929__, while females in states with RTW laws earn __29113__. 
+For Males in states with no RTW laws, the average income is __57619__, while males in states with RTW earn __49021__. 
+
+Furthermore, on average, all else equal, being an RTW State is associated with a decrease of USD 7691.56 in the wage income. Also, on average, all else equal, being a male is associated with an increase of USD 20809.02 in annual wage income.
+
+```{r, warning=FALSE, fig.align='center'}
 ggplot(dataset, aes(Right_to_Work, incwage, fill = Right_to_Work), group = Right_to_Work) +
   geom_bar(stat = "summary", fun.y = "mean", position = position_dodge(width = 2.0), width = .7) +
   labs(x = "Right to Work", y = "Income (dollars)") +
   scale_x_discrete(breaks= c(0,1), labels = c("No RTW", "Has RTW")) +
   scale_y_continuous(breaks = c(10000,20000,30000,40000,50000,60000), labels = dollar) +
   scale_fill_manual(name= "Right to Work Status", labels=c("No Right to Work", "Right to Work"),
-                    values = c("dodgerblue4", "indianred4")) +
+                    values = c("tomato", "olivedrab1")) +
   facet_grid(. ~ sex) +
-  labs(title = "Average Income by Sex", subtitle = "Divided by Right to Work/ No Right to Work") +
+  labs(title = "Average Income by Sex", subtitle = "Divided by Right to Work/ No Right to Work", caption = "IPUMS") +
   theme_stata() +
   scale_color_stata()+
   theme(plot.subtitle=element_text(size=10, hjust=0.5, color="black")) +
@@ -91,29 +171,30 @@ print(incSexMeans)
 
 ```
 
-For Females in states with no RTW laws, the average income is __35929__, while females in states with RTW laws earn __29113__. 
-For Males in states with no RTW laws, the average income is __57619__, while males in states with RTW earn __49021__. 
-These results shows that the presence of RTW laws effect both male and female income earnings. 
+```{r}
+testsex=lm(incwage~Right_to_Work+sex,data=dataset)
+summary(testsex)
+```
+
+Our Adjusted R Squared for this model is still small but higher than the previous one. 
+
+```{r}
+summary(testsex)$adj.r.squared
+```
+
+This t-test shows if there is a significant difference in the mean values of income between Males and Females. With a P-value of 2.2e-16, we can safely reject the null hypothesis that there is no difference in the mean values of income between Males and Females. 
+
 ```{r}
 incSex <- t.test(incwage~sex, data = dataset)
 print(incSex)
 ```
-This t-test shows if there is a significant difference in the mean values of income between Males and Females. With a P-value of 2.2e-16, we can safely reject the null hypothesis that there is no difference in the mean values of income between Males and Females. 
 
-### Our results are **Significant**;
-On average, all else equal, being an RTW State is associated with a decrease of USD 7736.112 in the wage income. Also, on average, all else equal, one more year in age is associated with an increase of approximately USD 71 in annual wages. 
 
-```{r}
-testRTW=lm(as.numeric(incwage)~Right_to_Work+age,data=dataset)
-summary(testRTW)
-```
+**Let's consider additional independent variable - age**
 
-Our adjusted R-squared for this regression is small...
-```{r}
-summary(testRTW)$adj.r.squared
-```
+On average, all else equal, being an RTW State is associated with a decrease of USD 7736.112 in the wage income. Also, on average, all else equal, one more year in age is associated with an increase of approximately USD 71 in annual wages. Our adjusted R-squared for this regression is small.
 
-```{r}
+```{r, warning=FALSE, fig.align='center'}
 ggplot(dataset, aes(age, incwage, show.legend=TRUE)) +
   stat_summary(fun.y="mean",geom="point")+
   labs(x = "Age", y = "Income (dollars)") +
@@ -129,23 +210,87 @@ ggplot(dataset, aes(age, incwage, show.legend=TRUE)) +
   theme(axis.text.y = element_text(angle = 45))
 ```
 
+```{r}
+testage=lm(incwage~Right_to_Work+age,data=dataset)
+summary(testage)
+```
 
+Our Adjusted R squared is really small which means the model is not strong.
+```{r}
+summary(testage)$adj.r.squared
+```
 
+**T test**
 
-##### The p-value for the interaction between sex*Right_to_Work is <2e-16 (significant), which indicates that the relationships between Right to Work and income length depends on gender - if the individual is male or female. 
+The p-value for the interaction between sex*Right_to_Work is <2e-16 (significant), which indicates that the relationships between Right to Work and income length depends on gender - if the individual is male or female. 
+
 ```{r}
 t.test(incwage~Right_to_Work, data = dataset)
 
 #aov means anove test. We are testing the dependent variable(sex), on its relationship to the independent variables of sex and right to work. the order of the variables in the code (sex*Right_to_Work) is important). 
 summary(aov(incwage ~ sex*Right_to_Work, data = dataset))
 
-
 ```
 
+**A new regression model**
 
+Given the fact that our previous regression models were weak, we decided to run more comprehensive model on our outcome variable- income wage. 
 
-#Conclusion
-We found that there is a strong correlation between Right to Work and no Right to Work regarding income. In addition, there is a significant correlation between sex and income. Lastly, We found compelling evidence to suggest that further significance when we consider sex and age as other explanatory variables, through our ANOVA test .
+```{r}
+newreg=lm(incwage~Right_to_Work+age+sex,data=dataset)
+summary(newreg)
+```
 
+Still no significant improvement over the previous models. 
 
+```{r}
+summary(newreg)$adj.r.squared
+```
+
+Explanatory variables are not highly correlated.
+
+```{r, include=FALSE}
+library(car)
+library(dotwhisker)
+```
+
+```{r}
+# collinearity?
+vif(newreg) > 4 # problem?
+```
+
+**Comparing Regression Models**
+
+Our models are clearly stastically inaccurate. We can see that the estimates are inflated. We assume our independent variables are not sufficient or the type of the model (linear) for this analysis is flawed. Confidence intervals seem to be really small, hence the dots instead of a horizontal line representing the range.
+
+```{r, warning=FALSE,fig.align='center'}
+allregression=rbind(LinRegwage,testsex,testage,newreg)
+dwplot(list(LinRegwage,testsex,testage,newreg)) + 
+    geom_vline(xintercept = 0, 
+               colour = "grey60", 
+               linetype = 2) +
+    labs(title = "Regression Coefficient Comparison") +
+    labs(caption = "IPUMS") + 
+    theme_stata() +
+    theme(plot.title = element_text(size =12, hjust =0.5),
+          axis.text.x=element_text(size=9),
+          axis.text.y = element_text(size=9, angle=0))
+```
+
+_____
+<a id='part3'></a>
+
+<p style="text-align: center; font-size: 175%;"><b>
+Findings
+</b></p>
+
+We found that there is a strong correlation between Right to Work and no Right to Work regarding income. We found compelling evidence to suggest that further significance when we consider sex and age as other explanatory variables.For future analyses, more literature could be consulted in order to make informed hypotheses on which independent variables and type of model could improve the accuracy of our analysis. 
+
+<br>
+
+[Go back to top of the page](#Top)
+
+[Go back to the table of contents](#Contents)
+
+[Go to the Project Repo](https://github.com/EvanLih/PUBPOL599_Right_To_Work)
 
